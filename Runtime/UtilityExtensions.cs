@@ -1,0 +1,41 @@
+using UnityEngine;
+
+namespace UnityEssentials
+{
+    public static class UtilityExtensions
+    {
+        public static float Remap(this float value, float from1, float to1, float from2, float to2) =>
+            (value - from1) / (to1 - from1) * (to2 - from2) + from2;
+
+        public static Vector3 Round(this Vector3 vector, int decimalPlaces = 2)
+        {
+            float multiplier = Mathf.Pow(10f, decimalPlaces);
+
+            return new Vector3(
+                Mathf.Round(vector.x * multiplier) / multiplier,
+                Mathf.Round(vector.y * multiplier) / multiplier,
+                Mathf.Round(vector.z * multiplier) / multiplier);
+        }
+
+        public static Vector3 Divide(this Vector3 numerator, Vector3 denominator) =>
+            new Vector3(
+                numerator.x / denominator.x,
+                numerator.y / denominator.y,
+                numerator.z / denominator.z);
+
+
+        public static float Lerp(this int a, int b, float t) =>
+            a + (b - a) * t;
+
+        public static float Lerp(this float a, float b, float t) =>
+            a + (b - a) * t;
+
+        public static float Slerp(this float a, float b, float t, float power = 2f)
+        {
+            // Apply exponential easing (smooth curve)
+            float easedT = Mathf.Pow(t, power);
+
+            return a + (b - a) * easedT;
+        }
+    }
+}
