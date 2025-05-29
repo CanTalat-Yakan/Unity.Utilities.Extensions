@@ -4,6 +4,13 @@ namespace UnityEssentials
 {
     public static class UtilityExtensions
     {
+        public static T GetOrAddComponent<T>(this GameObject gameObject) where T : Component
+        {
+            if (gameObject.TryGetComponent<T>(out var component))
+                return component;
+            return gameObject.AddComponent<T>();
+        }
+
         public static Vector3 ToVector3(this (double x, double y, double z)v) =>
             new Vector3((float)v.x, (float)v.y, (float)v.z);
 
