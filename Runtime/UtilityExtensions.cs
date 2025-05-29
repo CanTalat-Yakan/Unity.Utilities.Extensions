@@ -4,6 +4,9 @@ namespace UnityEssentials
 {
     public static class UtilityExtensions
     {
+        public static Vector3 ToVector3(this (double x, double y, double z)v) =>
+            new Vector3((float)v.x, (float)v.y, (float)v.z);
+
         public static float Remap(this float value, float from1, float to1, float from2, float to2) =>
             (value - from1) / (to1 - from1) * (to2 - from2) + from2;
 
