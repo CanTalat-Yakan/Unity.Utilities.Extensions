@@ -24,18 +24,18 @@ namespace UnityEssentials
                 numerator.z / denominator.z);
 
 
-        public static float Lerp(this int a, int b, float t) =>
-            a + (b - a) * t;
+        public static float Lerp(this Vector2Int v, float t) =>
+            v.x + (v.y - v.x) * t;
 
-        public static float Lerp(this float a, float b, float t) =>
-            a + (b - a) * t;
+        public static float Lerp(this Vector2 v, float t) =>
+            v.x + (v.y - v.x) * t;
 
-        public static float Slerp(this float a, float b, float t, float power = 2f)
+        public static float Slerp(this Vector2 v, float t, float power = 2f)
         {
             // Apply exponential easing (smooth curve)
             float easedT = Mathf.Pow(t, power);
 
-            return a + (b - a) * easedT;
+            return v.x + (v.y - v.x) * easedT;
         }
     }
 }
