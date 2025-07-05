@@ -11,16 +11,15 @@ namespace UnityEssentials
             return gameObject.AddComponent<T>();
         }
 
-        public static Vector3 ToVector3(this (double x, double y, double z)v) =>
-            new Vector3((float)v.x, (float)v.y, (float)v.z);
+        public static Vector3 ToVector3(this (double x, double y, double z)vector) =>
+            new Vector3((float)vector.x, (float)vector.y, (float)vector.z);
 
-        public static float Remap(this float value, float from1, float to1, float from2, float to2) =>
-            (value - from1) / (to1 - from1) * (to2 - from2) + from2;
+        public static float Remap(this float value, float sourceMin, float sourceMax, float targetMin, float targetMax) =>
+            (value - sourceMin) / (sourceMax - sourceMin) * (targetMax - targetMin) + targetMin;
 
         public static Vector3 Round(this Vector3 vector, int decimalPlaces = 2)
         {
             float multiplier = Mathf.Pow(10f, decimalPlaces);
-
             return new Vector3(
                 Mathf.Round(vector.x * multiplier) / multiplier,
                 Mathf.Round(vector.y * multiplier) / multiplier,
@@ -33,19 +32,16 @@ namespace UnityEssentials
                 numerator.y / denominator.y,
                 numerator.z / denominator.z);
 
+        public static float Lerp(this Vector2Int vector, float time) =>
+            vector.x + (vector.y - vector.x) * time;
 
-        public static float Lerp(this Vector2Int v, float t) =>
-            v.x + (v.y - v.x) * t;
+        public static float Lerp(this Vector2 vector, float time) =>
+            vector.x + (vector.y - vector.x) * time;
 
-        public static float Lerp(this Vector2 v, float t) =>
-            v.x + (v.y - v.x) * t;
-
-        public static float Slerp(this Vector2 v, float t, float power = 2f)
+        public static float Slerp(this Vector2 vector, float time, float power = 2f)
         {
-            // Apply exponential easing (smooth curve)
-            float easedT = Mathf.Pow(t, power);
-
-            return v.x + (v.y - v.x) * easedT;
+            float easedTime = Mathf.Pow(time, power);
+            return vector.x + (vector.y - vector.x) * easedTime;
         }
     }
 }
