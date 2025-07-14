@@ -4,6 +4,9 @@ namespace UnityEssentials
 {
     public static class UtilityExtensions
     {
+        public static T GetOrAddComponent<T>(this MonoBehaviour script) where T : Component =>
+            GetOrAddComponent<T>(script.gameObject);
+
         public static T GetOrAddComponent<T>(this GameObject gameObject) where T : Component
         {
             if (gameObject.TryGetComponent<T>(out var component))
