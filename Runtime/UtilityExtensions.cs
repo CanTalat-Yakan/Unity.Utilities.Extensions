@@ -4,7 +4,18 @@ namespace UnityEssentials
 {
     public static class UtilityExtensions
     {
-        public static T GetOrAddComponent<T>(this MonoBehaviour script) where T : Component =>
+        public static void DestroyAllChildren(this Component script) =>
+            DestroyAllChildren(script.transform);
+
+        public static void DestroyAllChildren(this Transform transform)
+        {
+            while (transform.childCount > 0)
+                if (Application.isEditor)
+                    Object.DestroyImmediate(transform.GetChild(0).gameObject);
+                else Object.Destroy(transform.GetChild(0).gameObject);
+        }
+
+        public static T GetOrAddComponent<T>(this Component script) where T : Component =>
             GetOrAddComponent<T>(script.gameObject);
 
         public static T GetOrAddComponent<T>(this GameObject gameObject) where T : Component
@@ -14,7 +25,7 @@ namespace UnityEssentials
             return gameObject.AddComponent<T>();
         }
 
-        public static Vector3 ToVector3(this (double x, double y, double z)vector) =>
+        public static Vector3 ToVector3(this (double x, double y, double z) vector) =>
             new Vector3((float)vector.x, (float)vector.y, (float)vector.z);
 
         public static float Remap(this float value, float sourceMin, float sourceMax, float targetMin, float targetMax) =>
