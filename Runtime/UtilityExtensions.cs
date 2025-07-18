@@ -57,5 +57,8 @@ namespace UnityEssentials
             float easedTime = Mathf.Pow(time, power);
             return vector.x + (vector.y - vector.x) * easedTime;
         }
+
+        public static void SetDynamicResolution(this Camera camera, bool allow) =>
+            camera.allowDynamicResolution = allow;
     }
 }
