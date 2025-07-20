@@ -4,6 +4,9 @@ namespace UnityEssentials
 {
     public static class UtilityExtensions
     {
+        public static void SetDynamicResolution(this Camera camera, bool allow) =>
+            camera.allowDynamicResolution = allow;
+
         public static void DestroyAllChildren(this Component script) =>
             DestroyAllChildren(script.transform);
 
@@ -25,8 +28,23 @@ namespace UnityEssentials
             return gameObject.AddComponent<T>();
         }
 
+        public static Vector2 ToVector2(this (double x, double y) vector) =>
+            new Vector2((float)vector.x, (float)vector.y);
+
+        public static Vector3 ToVector2(this Vector2Int vector) =>
+            new Vector3(vector.x, vector.y);
+
+        public static Vector2Int ToVector2Int(this Vector2 vector) =>
+            new Vector2Int(Mathf.RoundToInt(vector.x), Mathf.RoundToInt(vector.y));
+
         public static Vector3 ToVector3(this (double x, double y, double z) vector) =>
             new Vector3((float)vector.x, (float)vector.y, (float)vector.z);
+
+        public static Vector3 ToVector3(this Vector3Int vector) =>
+            new Vector3(vector.x, vector.y, vector.z);
+
+        public static Vector3Int ToVector3Int(this Vector3 vector) =>
+            new Vector3Int(Mathf.RoundToInt(vector.x), Mathf.RoundToInt(vector.y), Mathf.RoundToInt(vector.z));
 
         public static float Remap(this float value, float sourceMin, float sourceMax, float targetMin, float targetMax) =>
             (value - sourceMin) / (sourceMax - sourceMin) * (targetMax - targetMin) + targetMin;
@@ -58,7 +76,14 @@ namespace UnityEssentials
             return vector.x + (vector.y - vector.x) * easedTime;
         }
 
-        public static void SetDynamicResolution(this Camera camera, bool allow) =>
-            camera.allowDynamicResolution = allow;
+        public static Vector2 ExtractFromString(this string input, char separator)
+        {
+            var parts = input.Split(separator);
+            if (parts.Length != 2)
+                return Vector2.zero;
+            if (float.TryParse(parts[0], out var width) && float.TryParse(parts[1], out var height))
+                return new Vector2(width, height);
+            return Vector2.zero;
+        }
     }
 }
