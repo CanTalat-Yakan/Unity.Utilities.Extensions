@@ -1,11 +1,25 @@
+using System.Runtime.CompilerServices;
 using UnityEngine;
+using UnityEngine.Rendering.HighDefinition;
 
 namespace UnityEssentials
 {
     public static class UtilityExtensions
     {
-        public static void SetDynamicResolution(this Camera camera, bool allow) =>
+        private static readonly ConditionalWeakTable<Camera, HDAdditionalCameraData> _cameraDataCache = new();
+        public static void SetDynamicResolution(this Camera camera, bool allow)
+        {
+            if (!_cameraDataCache.TryGetValue(camera, out var cameraData))
+            {
+                cameraData = camera.GetComponent<HDAdditionalCameraData>();
+                if (cameraData != null)
+                    _cameraDataCache.Add(camera, cameraData);
+            }
+
+            if (cameraData != null)
+                cameraData.allowDynamicResolution = allow;
             camera.allowDynamicResolution = allow;
+        }
 
         public static void DestroyAllChildren(this Component script) =>
             DestroyAllChildren(script.transform);
