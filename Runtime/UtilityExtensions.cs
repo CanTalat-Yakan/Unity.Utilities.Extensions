@@ -24,12 +24,30 @@ namespace UnityEssentials
         public static void DestroyAllChildren(this Component script) =>
             DestroyAllChildren(script.transform);
 
+        public static void DestroyAllChildren<T>(this Component script) where T : Component =>
+            DestroyAllChildren<T>(script.transform);
+
         public static void DestroyAllChildren(this Transform transform)
         {
             while (transform.childCount > 0)
                 if (Application.isEditor)
                     Object.DestroyImmediate(transform.GetChild(0).gameObject);
                 else Object.Destroy(transform.GetChild(0).gameObject);
+        }
+
+        public static void DestroyAllChildren<T>(this Transform transform) where T : Component
+        {
+            foreach (var child in transform.GetComponentsInChildren<T>())
+                Destroy(child.gameObject);
+        }
+
+        public static void Destroy(this GameObject gameObject)
+        {
+            DestroyAllChildren(gameObject.transform);
+
+            if (Application.isEditor)
+                Object.DestroyImmediate(gameObject);
+            else Object.Destroy(gameObject);
         }
 
         public static T GetOrAddComponent<T>(this Component script) where T : Component =>
@@ -90,7 +108,7 @@ namespace UnityEssentials
             return vector.x + (vector.y - vector.x) * easedTime;
         }
 
-        public static Vector2 ExtractFromString(this string input, char separator)
+        public static Vector2 ExtractVector2FromString(this string input, char separator)
         {
             var parts = input.Split(separator);
             if (parts.Length != 2)
@@ -98,6 +116,16 @@ namespace UnityEssentials
             if (float.TryParse(parts[0], out var width) && float.TryParse(parts[1], out var height))
                 return new Vector2(width, height);
             return Vector2.zero;
+        }
+
+        public static Vector3 ExtractVector3FromString(this string input, char separator)
+        {
+            var parts = input.Split(separator);
+            if (parts.Length != 3)
+                return Vector3.zero;
+            if (float.TryParse(parts[0], out var x) && float.TryParse(parts[1], out var y) && float.TryParse(parts[2], out var z))
+                return new Vector3(x, y, z);
+            return Vector3.zero;
         }
     }
 }
