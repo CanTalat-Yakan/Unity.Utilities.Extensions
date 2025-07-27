@@ -60,6 +60,20 @@ namespace UnityEssentials
             return gameObject.AddComponent<T>();
         }
 
+        public static string Format(this string input)
+        {
+            if (string.IsNullOrEmpty(input))
+                return string.Empty;
+
+            // Replace underscores with spaces
+            string result = input.Replace("_", " ");
+            // Insert spaces before capital letters (camel case)
+            result = System.Text.RegularExpressions.Regex.Replace(result, "(?<!^)([A-Z])", " $1");
+            // Capitalize each word
+            result = System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(result);
+
+            return result.Trim();
+        }
         public static Vector2 ToVector2(this (double x, double y) vector) =>
             new Vector2((float)vector.x, (float)vector.y);
 
@@ -138,7 +152,7 @@ namespace UnityEssentials
         /// corresponds to +20 dB.</returns>
         public static float ToDecibelLevel(this int volume)
         {
-            // Clamp the input volume to ensure it's within the range [0, 200]
+            // Clamp the input volume to ensure it'input within the range [0, 200]
             // Then normalize it to the range [0, 1] where:
             // - 0 corresponds to the minimum volume (-80 dB)
             // - 0.5 corresponds to the default volume (0 dB)
