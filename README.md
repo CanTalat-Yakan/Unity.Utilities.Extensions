@@ -24,7 +24,7 @@ Install the Unity Essentials entry package via Unity's Package Manager, then ins
 
 ---
 
-# Utilities Extensions
+# Utility Extensions
 
 > Quick overview: Handy, zero‑dependency extension methods for common Unity tasks: camera dynamic resolution, safe destroy helpers, component access, string formatting, vector conversions/parsing, math/remap, interpolation, and audio dB mapping.
 
